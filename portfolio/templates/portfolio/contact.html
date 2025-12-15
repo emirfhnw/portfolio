@@ -1,0 +1,69 @@
+{% extends "portfolio/base.html" %}
+{% block title %}Kontakt · Portfolio{% endblock %}
+
+{% block content %}
+<section class="section">
+  <header class="section-head">
+    <h1>Kontakt</h1>
+    <p class="muted">Formular wird serverseitig verarbeitet und gespeichert.</p>
+  </header>
+
+  {% if messages %}
+    <div class="flash-stack">
+      {% for message in messages %}
+        <div class="flash {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="grid contact-grid">
+    <article class="card glass">
+      <form method="post" class="contact-form" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="field-error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="field">
+          <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+          {{ form.name }}
+          {% if form.name.errors %}<div class="field-error">{{ form.name.errors }}</div>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+          {{ form.email }}
+          {% if form.email.errors %}<div class="field-error">{{ form.email.errors }}</div>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+          {{ form.subject }}
+          {% if form.subject.errors %}<div class="field-error">{{ form.subject.errors }}</div>{% endif %}
+        </div>
+
+        <div class="field">
+          <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+          {{ form.message }}
+          {% if form.message.errors %}<div class="field-error">{{ form.message.errors }}</div>{% endif %}
+        </div>
+
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Senden</button>
+        </div>
+      </form>
+    </article>
+
+    <article class="card glass">
+      <h2 class="card-title">Hinweis</h2>
+      <p class="muted">Messages werden in der Datenbank gespeichert und sind im Admin sichtbar.</p>
+      <ul class="list">
+        <li>Serverseitige Validierung</li>
+        <li>Kein JavaScript nötig</li>
+        <li>Testabdeckung vorhanden</li>
+      </ul>
+    </article>
+  </div>
+</section>
+{% endblock %}

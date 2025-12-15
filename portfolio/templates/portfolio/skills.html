@@ -1,0 +1,38 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}Skills · Portfolio{% endblock %}
+
+{% block content %}
+<section class="section">
+  <header class="section-head">
+    <h1>Skills</h1>
+    <p class="muted">Skills die ich mir angeignet habe</p>
+  </header>
+
+  <div class="grid cards">
+    {% for s in skills %}
+      <article class="card skill-card">
+        <div class="skill-top">
+          <div class="skill-left">
+            <div class="skill-ico">
+              <img src="{% static 'icons/' %}{{ s.key|lower }}.svg" alt="{{ s }}">
+            </div>
+            <div class="skill-text">
+              <div class="skill-name">{{ s }}</div>
+              <div class="skill-cat">{{ s.category|default:"General" }}</div>
+            </div>
+          </div>
+
+          <div class="skill-right">
+            <div class="bar" style="--lvl: {{ s.level }};"><i></i></div>
+            <div class="lvl">{{ s.level }}/5</div>
+          </div>
+        </div>
+        <div class="skill-foot muted2">Sauber, nachvollziehbar,</div>
+      </article>
+    {% empty %}
+      <p class="muted">Noch keine Skills. Im Admin anlegen.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

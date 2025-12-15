@@ -1,0 +1,53 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}{{ project.title }} · Portfolio{% endblock %}
+
+{% block content %}
+<article class="section">
+  <header class="section-head">
+    <p class="eyebrow">{% if project.featured %}Featured Project{% else %}Project{% endif %}</p>
+    <h1>{{ project.title }}</h1>
+    <p class="muted">{{ project.short_description }}</p>
+  </header>
+
+  <div class="detail">
+    <section class="card glass">
+      <div class="detail-media">
+        {% if project.cover_image %}
+          <img src="{{ project.cover_image.url }}" alt="{{ project.title }}">
+        {% else %}
+          <img src="{% static 'img/placeholder.png' %}" alt="{{ project.title }}">
+        {% endif %}
+      </div>
+
+      <h2 class="card-title" style="margin-top:14px;">Beschreibung</h2>
+      <div class="prose">{{ project.description|linebreaksbr }}</div>
+    </section>
+
+    <aside class="card glass">
+      <h2 class="card-title">Meta</h2>
+      <dl class="meta">
+        <div>
+          <dt>Tech</dt>
+          <dd>{{ project.tech_stack|default:"—" }}</dd>
+        </div>
+        <div>
+          <dt>Erstellt</dt>
+          <dd>{{ project.created_at|date:"d.m.Y" }}</dd>
+        </div>
+      </dl>
+
+      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+        {% if project.repo_url %}<a class="btn" href="{{ project.repo_url }}">Repo</a>{% endif %}
+        {% if project.live_url %}<a class="btn primary" href="{{ project.live_url }}">Live</a>{% endif %}
+        <a class="btn" href="{% url 'projects' %}">Zur Liste</a>
+      </div>
+
+      <div style="margin-top:16px;">
+        {% if project.featured %}<span class="tag good">Featured</span>{% endif %}
+        {% if project.tech_stack %}<span class="tag blue">{{ project.tech_stack }}</span>{% endif %}
+      </div>
+    </aside>
+  </div>
+</article>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}{{ page.title }} · Portfolio{% endblock %}
+
+{% block content %}
+<section class="section">
+  <header class="section-head">
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}<p class="muted">{{ page.subtitle }}</p>{% endif %}
+  </header>
+
+  <div class="grid about">
+    <article class="card glass about-hero-card">
+      <div class="about-hero">
+        <div class="about-hero-text">
+          {% if page.intro %}
+            <div class="prose">{{ page.intro|linebreaksbr }}</div>
+          {% endif %}
+          {% if page.cv_file %}
+            <div class="about-actions">
+              <a class="btn primary" href="{{ page.cv_file.url }}" target="_blank" rel="noopener">Lebenslauf öffnen</a>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if page.profile_image %}
+          <div class="about-photo-wrap">
+            <img class="about-photo" src="{{ page.profile_image.url }}" alt="Emircan">
+          </div>
+        {% endif %}
+      </div>
+    </article>
+
+    {% for b in page.blocks.all %}
+      <article class="card glass">
+        <h2 class="card-title">{{ b.heading }}</h2>
+        <div class="prose">{{ b.body|linebreaksbr }}</div>
+      </article>
+    {% endfor %}
+
+    {% if page.timeline.all %}
+      <article class="card glass">
+        <h2 class="card-title">Werdegang</h2>
+        <div class="timeline">
+          {% for t in page.timeline.all %}
+            <div class="timeline-item">
+              <div class="timeline-time">
+                {% if t.year_from or t.year_to %}
+                  <span>{{ t.year_from }}{% if t.year_to %}–{{ t.year_to }}{% endif %}</span>
+                {% endif %}
+              </div>
+              <div class="timeline-body">
+                <div class="timeline-title">{{ t.title }}</div>
+                {% if t.subtitle %}<div class="timeline-sub">{{ t.subtitle }}</div>{% endif %}
+                {% if t.body %}<div class="timeline-text">{{ t.body|linebreaksbr }}</div>{% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    {% endif %}
+
+    {% if page.gallery.all %}
+      <article class="card glass">
+        <h2 class="card-title">Gallery</h2>
+        <div class="gallery">
+          {% for g in page.gallery.all %}
+            <figure class="gallery-item">
+              <img src="{{ g.image.url }}" alt="{{ g.caption }}">
+              {% if g.caption %}<figcaption class="muted">{{ g.caption }}</figcaption>{% endif %}
+            </figure>
+          {% endfor %}
+        </div>
+      </article>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

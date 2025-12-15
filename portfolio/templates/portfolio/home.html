@@ -1,0 +1,155 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block title %}Home · Portfolio{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-shell">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <p class="eyebrow">Data Science · Web Engineering</p>
+        <h1 class="hero-title">
+          Willkommen in meinem Portfolio<br>
+          <span class="grad">Vom Polymechaniker zum Data Scientist</span>
+        </h1>
+        <p class="hero-lead">
+          Ich bin Emircan Bagcivan, Data Science Student mit Praxisfokus. Ich habe gelernt,
+          Probleme im Alltag effizient und sinnvoll zu lösen heute übersetze ich das in Daten:
+          Analyse, Visualisierung und Webapps mit sauberer Struktur. Ziel: verständliche Insights
+          und Lösungen, die wirklich helfen.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="{% url 'projects' %}">Projekte</a>
+          <a class="btn" href="{% url 'skills' %}">Skills</a>
+          <a class="btn" href="{% url 'about' %}">About</a>
+          <a class="btn" href="{% url 'contact' %}">Kontakt</a>
+        </div>
+
+        <dl class="stats">
+          <div class="stat">
+            <dt>Projekte</dt>
+            <dd>{{ latest_projects|length }}</dd>
+          </div>
+          <div class="stat">
+            <dt>Skills</dt>
+            <dd>{{ skills|length }}</dd>
+          </div>
+          <div class="stat">
+            <dt>Tests</dt>
+            <dd>OK</dd>
+          </div>
+        </dl>
+      </div>
+
+      <aside class="hero-right">
+        <div class="card glass hero-card">
+          <div class="profile">
+            <div class="profile-pic">
+              <img src="{% static 'img/hero.png' %}" alt="Emircan Bagcivan">
+            </div>
+            <div class="profile-meta">
+              <div class="profile-name">Emircan Bagcivan</div>
+              <div class="profile-role">Ziel: Junior Data Scientist</div>
+              <div class="profile-note">Effizient. Sinnvoll. Robust.</div>
+            </div>
+          </div>
+
+          <div class="chips">
+            <span class="chip">Analyse</span>
+            <span class="chip">Webapps</span>
+            <span class="chip">Testing</span>
+            <span class="chip">Django Admin</span>
+          </div>
+        </div>
+
+        <div class="card glass hero-card">
+          <h2 class="card-title">Was ich mitbringe</h2>
+          <p class="muted">
+            Praxisorientierter Einstieg in Data Science: saubere Datenaufbereitung, nachvollziehbare Analysen und kleine Webapps,
+            die Ergebnisse verständlich sichtbar machen.
+          </p>
+          <div class="tags">
+            <span class="tag blue">Python</span>
+            <span class="tag good">Pandas</span>
+            <span class="tag hot">Django</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <header class="section-head">
+    <h2>Neueste Projekte</h2>
+    <p class="muted"></p>
+  </header>
+
+  <div class="grid cards">
+    {% for p in latest_projects %}
+      <article class="card project-card">
+        <a class="project-media" href="{% url 'project_detail' p.slug %}">
+          {% if p.cover_image %}
+            <img src="{{ p.cover_image.url }}" alt="{{ p.title }}">
+          {% else %}
+            <img src="{% static 'img/placeholder.png' %}" alt="{{ p.title }}">
+          {% endif %}
+        </a>
+
+        <div class="project-body">
+          <h3 class="project-title">
+            <a href="{% url 'project_detail' p.slug %}">{{ p.title }}</a>
+          </h3>
+          <p class="project-desc">{{ p.short_description }}</p>
+        </div>
+
+        <div class="project-foot">
+          <div class="project-badges">
+            {% if p.featured %}<span class="tag good">Featured</span>{% endif %}
+            {% if p.tech_stack %}<span class="tag blue">{{ p.tech_stack }}</span>{% endif %}
+          </div>
+          <a class="link" href="{% url 'project_detail' p.slug %}">Details</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="muted">Noch keine Projekte. Im Admin anlegen.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <header class="section-head">
+    <h2>Skills</h2>
+    <p class="muted"></p>
+  </header>
+
+  <div class="grid cards">
+    {% for s in skills %}
+      <article class="card skill-card">
+        <div class="skill-top">
+          <div class="skill-left">
+            <div class="skill-ico">
+              <img src="{% static 'icons/' %}{{ s.key|lower }}.svg" alt="{{ s }}">
+            </div>
+            <div class="skill-text">
+              <div class="skill-name">{{ s }}</div>
+              <div class="skill-cat">{{ s.category|default:"General" }}</div>
+            </div>
+          </div>
+
+          <div class="skill-right">
+            <div class="bar" style="--lvl: {{ s.level }};"><i></i></div>
+            <div class="lvl">{{ s.level }}/5</div>
+          </div>
+        </div>
+        <div class="skill-foot muted2">Sauber, nachvollziehbar, wartbar.</div>
+      </article>
+    {% empty %}
+      <p class="muted">Noch keine Skills. Im Admin anlegen.</p>
+    {% endfor %}
+
+  </div>
+</section>
+{% endblock %}

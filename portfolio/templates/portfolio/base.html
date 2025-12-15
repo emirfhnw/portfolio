@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Portfolio{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{% url 'home' %}">
+        <span class="brand-dot"></span>
+        <span class="brand-text">Portfolio <span class="brand-sub">Emircan Bagican</span></span>
+      </a>
+
+      <nav class="nav">
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+        <a class="nav-link {% if '/projects' in request.path %}active{% endif %}" href="{% url 'projects' %}">Projekte</a>
+        <a class="nav-link {% if '/skills' in request.path %}active{% endif %}" href="{% url 'skills' %}">Skills</a>
+        <a class="nav-link {% if '/about' in request.path %}active{% endif %}" href="{% url 'about' %}">About</a>
+        <a class="nav-link cta {% if '/contact' in request.path %}active{% endif %}" href="{% url 'contact' %}">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="muted">© {% now "Y" %} Emircan Bagcivan</p>
+    </div>
+  </footer>
+</body>
+</html>
