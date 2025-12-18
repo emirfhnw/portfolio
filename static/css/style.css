@@ -596,7 +596,14 @@ a{color:inherit}
   padding:18px 0;
   border-top:1px solid rgba(255,255,255,0.08);
 }
+/* .text_primary{
+  color:aqua
+} */
 
+/*#header {
+  color: red;
+  background: black;
+}*/
 .site-footer .container{
   display:flex;
   justify-content:flex-start;
@@ -624,4 +631,8 @@ a{color:inherit}
 @media (max-width: 560px){
   .bar{width:110px}
   .grid.cards{grid-template-columns:1fr}
+}
+
+#färben{
+  color: green;
 }

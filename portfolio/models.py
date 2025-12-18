@@ -14,6 +14,12 @@ class Project(models.Model):
     featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # skills = models.ManyToManyField( #verknüpfung zu Skill, falls benötigt mit project.skills.all()
+    #     "Skill",
+    #     blank=True,
+    #     related_name="projects"
+    # )
+
     class Meta:
         ordering = ["-featured", "-created_at"]
 
@@ -88,11 +94,23 @@ class Skill(models.Model):
 
 class ContactMessage(models.Model):
     name = models.CharField(max_length=120)
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     subject = models.CharField(max_length=160)
     message = models.TextField(max_length=500, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+#STATUS_CHOICES = [
+    #     ("new", "Neu"),
+    #     ("read", "Gelesen"),
+    #     ("done", "Erledigt"),
+    # ]
+    #
+    # status = models.CharField(
+    #     max_length=10,
+    #     choices=STATUS_CHOICES,
+    #     default="new"
+    # )
     class Meta:
         ordering = ["-created_at"]
 
