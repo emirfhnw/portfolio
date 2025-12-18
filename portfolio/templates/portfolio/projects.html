@@ -9,6 +9,37 @@
     <p class="muted">Datenanalyse, Visualisierung und Webapps mit sauberer Struktur.</p>
   </header>
 
+ 
+<form class="filter-form" method="get">
+  <div class="filter-group">
+    <label for="q">Suche</label>
+    <input id="q" type="text" name="q" value="{{ q }}" placeholder="Titel oder Beschreibung...">
+  </div>
+
+  <div class="filter-group">
+    <label for="skill">Skill</label>
+    <select id="skill" name="skill">
+      <option value="">Alle Skills</option>
+      {% for skill in skills %}
+        <option value="{{ skill.id }}" {% if skill.id|stringformat:"s" == selected_skill %}selected{% endif %}>{{ skill }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label class="filter-check">
+      <input type="checkbox" name="featured" value="on" {% if selected_featured %}checked{% endif %}>
+      <span>Nur Featured</span>
+    </label>
+  </div>
+
+  <div class="filter-actions">
+    <button class="btn primary" type="submit">Suchen / Filtern</button>
+    <a class="btn" href="{% url 'projects' %}">Zurücksetzen</a>
+  </div>
+</form>
+
+
   <div class="grid cards">
     {% for p in projects %}
       <article class="card">
@@ -22,6 +53,17 @@
         <div class="project-body">
           <h2 class="project-title"><a href="{% url 'project_detail' p.slug %}">{{ p.title }}</a></h2>
           <p class="project-desc">{{ p.short_description }}</p>
+  
+          {% with skill_list=p.skills.all %}
+          {% if skill_list %}
+          <div class="project-skills">
+            {% for skill in skill_list %}
+              <span class="tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
+        
         </div>
         <div class="project-meta">
           <div>
@@ -39,11 +81,11 @@
   {% if is_paginated %}
     <nav class="pagination" aria-label="Seitennavigation">
       {% if page_obj.has_previous %}
-        <a class="btn" href="?page={{ page_obj.previous_page_number }}">Zurück</a>
+        <a class="btn" href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q|urlencode }}{% endif %}{% if selected_skill %}&skill={{ selected_skill }}{% endif %}{% if selected_featured %}&featured=on{% endif %}">Zurück</a>
       {% endif %}
       <span class="muted">Seite {{ page_obj.number }} von {{ page_obj.paginator.num_pages }}</span>
       {% if page_obj.has_next %}
-        <a class="btn" href="?page={{ page_obj.next_page_number }}">Weiter</a>
+        <a class="btn" href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q|urlencode }}{% endif %}{% if selected_skill %}&skill={{ selected_skill }}{% endif %}{% if selected_featured %}&featured=on{% endif %}">Weiter</a>
       {% endif %}
     </nav>
   {% endif %}

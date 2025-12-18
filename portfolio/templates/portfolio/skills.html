@@ -23,10 +23,12 @@
             </div>
           </div>
 
+          
           <div class="skill-right">
-            <div class="bar" style="--lvl: {{ s.level }};"><i></i></div>
+            <div class="bar lvl-{{ s.level }}"><i></i></div>
             <div class="lvl">{{ s.level }}/5</div>
           </div>
+          
         </div>
         <div class="skill-foot muted2">
         {% if s.level == 5 %}
@@ -40,7 +42,7 @@
         {% elif s.level == 1 %}
           Erste Berührungspunkte
         {% else %}
-          –
+          Grundlagen
         {% endif %}
       </div>
       </article>

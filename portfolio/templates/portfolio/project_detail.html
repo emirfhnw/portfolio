@@ -20,8 +20,10 @@
         {% endif %}
       </div>
 
-      <h2 class="card-title" style="margin-top:14px;">Beschreibung</h2>
+      
+      <h2 class="card-title card-space-top">Beschreibung</h2>
       <div class="prose">{{ project.description|linebreaksbr }}</div>
+      
     </section>
 
     <aside class="card glass">
@@ -33,16 +35,28 @@
         </div>
       </dl>
 
-      <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+      
+      <div class="action-row">
         {% if project.repo_url %}<a class="btn" href="{{ project.repo_url }}">Repo</a>{% endif %}
         {% if project.live_url %}<a class="btn primary" href="{{ project.live_url }}">Live</a>{% endif %}
         <a class="btn" href="{% url 'projects' %}">Zur Liste</a>
       </div>
 
-      <div style="margin-top:16px;">
+      <div class="meta-tags">
         {% if project.featured %}<span class="tag good">Featured</span>{% endif %}
         {% if project.tech_stack %}<span class="tag blue">{{ project.tech_stack }}</span>{% endif %}
       </div>
+
+      {% with skill_list=project.skills.all %}
+        {% if skill_list %}
+          <h3 class="card-title card-space-top">Skills</h3>
+          <div class="skill-list">
+            {% for skill in skill_list %}
+              <span class="tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
     </aside>
   </div>
 </article>

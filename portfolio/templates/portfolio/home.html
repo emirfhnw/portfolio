@@ -12,7 +12,7 @@
           Willkommen in meinem Portfolio<br>
           <span class="grad">Vom Polymechaniker zum Data Scientist</span>
         </h1>
-        <p id="färben">
+        <p class="hero">
           Ich bin Emircan Bagcivan, Data Science Student mit Praxisfokus. Ich habe gelernt,
           Probleme im Alltag effizient und sinnvoll zu lösen heute übersetze ich das in Daten:
           Analyse, Visualisierung und Webapps mit sauberer Struktur. Ziel: verständliche Insights
@@ -135,10 +135,12 @@
             </div>
           </div>
 
+          
           <div class="skill-right">
-            <div class="bar" style="--lvl: {{ s.level }};"><i></i></div>
+            <div class="bar lvl-{{ s.level }}"><i></i></div>
             <div class="lvl">{{ s.level }}/5</div>
           </div>
+          
         </div>
         <div class="skill-foot muted2">Sauber, nachvollziehbar, wartbar.</div>
       </article>

@@ -596,14 +596,7 @@ a{color:inherit}
   padding:18px 0;
   border-top:1px solid rgba(255,255,255,0.08);
 }
-/* .text_primary{
-  color:aqua
-} */
 
-/*#header {
-  color: red;
-  background: black;
-}*/
 .site-footer .container{
   display:flex;
   justify-content:flex-start;
@@ -614,6 +607,69 @@ a{color:inherit}
   opacity:.85;
   font-size:.95rem;
 }
+
+
+.filter-form{
+  margin-bottom:16px;
+  padding:16px;
+  display:grid;
+  gap:12px;
+}
+
+.filter-group{
+  display:grid;
+  gap:6px;
+}
+
+.filter-check{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.filter-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.action-row{
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.project-skills{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:6px;
+}
+
+.meta-tags{
+  margin-top:16px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.card-space-top{
+  margin-top:14px;
+}
+
+.skill-list{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.bar.lvl-1 > i{width:20%}
+.bar.lvl-2 > i{width:40%}
+.bar.lvl-3 > i{width:60%}
+.bar.lvl-4 > i{width:80%}
+.bar.lvl-5 > i{width:100%}
+
 
 @media (max-width: 980px){
   .hero-grid{grid-template-columns:1fr}
@@ -633,6 +689,3 @@ a{color:inherit}
   .grid.cards{grid-template-columns:1fr}
 }
 
-#färben{
-  color: green;
-}

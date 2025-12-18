@@ -18,6 +18,8 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ("featured", "created_at")
     search_fields = ("title", "short_description", "description", "tech_stack")
     prepopulated_fields = {"slug": ("title",)}
+    filter_horizontal = ("skills",)
+    
 
 
 class SkillAdmin(admin.ModelAdmin):
@@ -74,10 +76,5 @@ safe_register(Project, ProjectAdmin)
 safe_register(Skill, SkillAdmin)
 safe_register(ContactMessage, ContactMessageAdmin)
 safe_register(AboutPage, AboutPageAdmin)
-
-from .models import Experience
-
-admin.site.register(Experience)
-
 
 
