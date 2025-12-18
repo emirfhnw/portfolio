@@ -74,3 +74,10 @@ safe_register(Project, ProjectAdmin)
 safe_register(Skill, SkillAdmin)
 safe_register(ContactMessage, ContactMessageAdmin)
 safe_register(AboutPage, AboutPageAdmin)
+
+from .models import Experience
+
+admin.site.register(Experience)
+
+
+

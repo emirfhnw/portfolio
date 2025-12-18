@@ -63,3 +63,7 @@ class ContactView(FormView):
         )
         messages.success(self.request, "Nachricht gespeichert. Danke!")
         return super().form_valid(form)
+from .models import Experience
+def experiences(request):
+    items = Experience.objects.all().order_by("-start_date")
+    return render(request, "portfolio/experiences.html", {"items": items})

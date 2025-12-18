@@ -1,0 +1,15 @@
+{% extends "portfolio/base.html" %}
+{% load static %}
+{% block content %}
+  <h1>Experiences</h1>
+
+  {% for x in items %}
+    <div>
+      <h3>{{ x.title }}</h3>
+      <p><strong>{{ x.company }}</strong></p>
+      <p>{{ x.description }}</p>
+    </div>
+  {% empty %}
+    <p>No entries yet.</p>
+  {% endfor %}
+{% endblock %}
