@@ -367,10 +367,12 @@ a{color:inherit}
 
 .skill-name{
   font-weight:820;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+
+  white-space: normal;     
+  overflow: visible;       
+  line-height: 1.25;
 }
+
 
 .skill-cat{font-size:.88rem;color:rgba(255,255,255,.68)}
 

@@ -33,8 +33,6 @@ class Project(models.Model):
 
 
 
-from django.db import models
-
 SKILL_CHOICES = [
     ("python", "Python"),
     ("html5", "HTML"),
@@ -90,9 +88,9 @@ class Skill(models.Model):
 
 class ContactMessage(models.Model):
     name = models.CharField(max_length=120)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     subject = models.CharField(max_length=160)
-    message = models.TextField()
+    message = models.TextField(max_length=500, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -100,6 +98,8 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.subject} — {self.email}"
+    
+    
 class AboutPage(models.Model):
     title = models.CharField(max_length=120, default="About")
     subtitle = models.CharField(max_length=220, blank=True, default="")

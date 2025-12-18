@@ -28,7 +28,21 @@
             <div class="lvl">{{ s.level }}/5</div>
           </div>
         </div>
-        <div class="skill-foot muted2">Sauber, nachvollziehbar,</div>
+        <div class="skill-foot muted2">
+        {% if s.level == 5 %}
+          Sehr sicher, tiefes Verständnis
+        {% elif s.level == 4 %}
+          Sauber, nachvollziehbar
+        {% elif s.level == 3 %}
+          Solide Grundlagen, praxisnah
+        {% elif s.level == 2 %}
+          Grundkenntnisse, in Aufbau
+        {% elif s.level == 1 %}
+          Erste Berührungspunkte
+        {% else %}
+          –
+        {% endif %}
+      </div>
       </article>
     {% empty %}
       <p class="muted">Noch keine Skills. Im Admin anlegen.</p>

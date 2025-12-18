@@ -35,7 +35,7 @@ class ProjectDetailView(DetailView):
 
 
 def about_view(request):
-    # Single Page: immer Datensatz ID=1 verwenden
+    
     page, _ = AboutPage.objects.get_or_create(id=1, defaults={"title": "About"})
     return render(request, "portfolio/about.html", {"page": page})
 

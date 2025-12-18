@@ -11,7 +11,7 @@ from .models import (
     AboutImage,
 )
 
-# ---- Admin Klassen ----
+
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ("title", "featured", "created_at")
@@ -28,7 +28,7 @@ class SkillAdmin(admin.ModelAdmin):
 
 
 class ContactMessageAdmin(admin.ModelAdmin):
-    # Falls deine Felder anders heißen: unten anpassen
+    
     list_display = ("name", "email", "created_at")
     list_filter = ("created_at",)
     search_fields = ("name", "email", "message")
