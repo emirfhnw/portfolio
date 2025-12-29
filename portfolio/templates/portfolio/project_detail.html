@@ -5,12 +5,15 @@
 {% block content %}
 <article class="section">
   <header class="section-head">
-    <p class="eyebrow">{% if project.featured %}Featured Project{% else %}Project{% endif %}</p>
+    <p class="eyebrow">
+      {% if project.featured %}Featured Project{% else %}Project{% endif %}
+    </p>
     <h1>{{ project.title }}</h1>
     <p class="muted">{{ project.short_description }}</p>
   </header>
 
   <div class="detail">
+    <!-- LEFT: MAIN CONTENT -->
     <section class="card glass">
       <div class="detail-media">
         {% if project.cover_image %}
@@ -20,43 +23,66 @@
         {% endif %}
       </div>
 
-      
       <h2 class="card-title card-space-top">Beschreibung</h2>
       <div class="prose">{{ project.description|linebreaksbr }}</div>
-      
     </section>
 
-    <aside class="card glass">
-      <h2 class="card-title">Infos</h2>
-      <dl class="meta">
-        <div>
-          <dt>Erstellt</dt>
-          <dd>{{ project.created_at|date:"d.m.Y" }}</dd>
+    <!-- RIGHT: INFO CARD -->
+    <aside class="card glass info-card">
+      <div class="info-head">
+        <h2 class="card-title info-title">Infos</h2>
+
+        <div class="info-actions">
+          {% if project.repo_url %}
+            <a class="btn btn-sm btn-gitlab"
+               href="{{ project.repo_url }}"
+               target="_blank"
+               rel="noopener">GitLab</a>
+          {% endif %}
+
+          {% if project.live_url %}
+            <a class="btn btn-sm primary"
+               href="{{ project.live_url }}"
+               target="_blank"
+               rel="noopener">Live</a>
+          {% endif %}
+
+          <a class="btn btn-sm" href="{% url 'projects' %}">Zur Liste</a>
         </div>
-      </dl>
-
-      
-      <div class="action-row">
-        {% if project.repo_url %}<a class="btn" href="{{ project.repo_url }}">Repo</a>{% endif %}
-        {% if project.live_url %}<a class="btn primary" href="{{ project.live_url }}">Live</a>{% endif %}
-        <a class="btn" href="{% url 'projects' %}">Zur Liste</a>
       </div>
 
-      <div class="meta-tags">
-        {% if project.featured %}<span class="tag good">Featured</span>{% endif %}
-        {% if project.tech_stack %}<span class="tag blue">{{ project.tech_stack }}</span>{% endif %}
-      </div>
+      <div class="info-blocks">
+        <div class="info-block">
+          <div class="info-label">Status</div>
+          <div class="info-chips">
+            {% if project.featured %}
+              <span class="tag good">Featured</span>
+            {% endif %}
+          </div>
+        </div>
 
-      {% with skill_list=project.skills.all %}
-        {% if skill_list %}
-          <h3 class="card-title card-space-top">Skills</h3>
-          <div class="skill-list">
-            {% for skill in skill_list %}
-              <span class="tag">{{ skill }}</span>
-            {% endfor %}
+        {% if project.tech_stack %}
+          <div class="info-block">
+            <div class="info-label">Stack</div>
+            <div class="info-chips">
+              <span class="tag blue">{{ project.tech_stack }}</span>
+            </div>
           </div>
         {% endif %}
-      {% endwith %}
+
+        {% with skill_list=project.skills.all %}
+          {% if skill_list %}
+            <div class="info-block">
+              <div class="info-label">Skills</div>
+              <div class="info-chips">
+                {% for skill in skill_list %}
+                  <span class="tag">{{ skill }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div>
     </aside>
   </div>
 </article>
