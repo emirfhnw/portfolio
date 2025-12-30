@@ -9,36 +9,6 @@
     <p class="muted">Datenanalyse, Visualisierung und Webapps mit sauberer Struktur.</p>
   </header>
 
- 
-<form class="filter-form" method="get">
-  <div class="filter-group">
-    <label for="q">Suche</label>
-    <input id="q" type="text" name="q" value="{{ q }}" placeholder="Titel oder Beschreibung...">
-  </div>
-
-  <div class="filter-group">
-    <label for="skill">Skill</label>
-    <select id="skill" name="skill">
-      <option value="">Alle Skills</option>
-      {% for skill in skills %}
-        <option value="{{ skill.id }}" {% if skill.id|stringformat:"s" == selected_skill %}selected{% endif %}>{{ skill }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="filter-group">
-    <label class="filter-check">
-      <input type="checkbox" name="featured" value="on" {% if selected_featured %}checked{% endif %}>
-      <span>Nur Featured</span>
-    </label>
-  </div>
-
-  <div class="filter-actions">
-    <button class="btn primary" type="submit">Suchen / Filtern</button>
-    <a class="btn" href="{% url 'projects' %}">Zurücksetzen</a>
-  </div>
-</form>
-
 
   <div class="grid cards">
     {% for p in projects %}
