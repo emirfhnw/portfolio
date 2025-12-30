@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+from urllib.parse import urlparse
+
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -11,7 +14,9 @@ def env_bool(name: str, default: bool = False) -> bool:
     return val.strip().lower() in ("1", "true", "yes", "on")
 
 
-# SECURITY
+# =====================
+# SECURITY / DEBUG
+# =====================
 SECRET_KEY = (
     os.environ.get("DJANGO_SECRET_KEY")
     or os.environ.get("SECRET_KEY")
@@ -20,11 +25,13 @@ SECRET_KEY = (
 
 DEBUG = env_bool("DJANGO_DEBUG", default=env_bool("DEBUG", default=False))
 
-# Hosts (Render + lokal)
+
+# =====================
+# HOSTS
+# =====================
 _allowed = {"127.0.0.1", "localhost", ".onrender.com"}
 
-# Render setzt oft RENDER_EXTERNAL_HOSTNAME (z.B. portfolio-m7bv.onrender.com)
-render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")  # z.B. portfolio-m7bv.onrender.com
 if render_host:
     _allowed.add(render_host)
 
@@ -38,7 +45,26 @@ if extra_hosts:
 ALLOWED_HOSTS = sorted(_allowed)
 
 
+# =====================
+# CLOUDINARY (Media)
+# =====================
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL", "").strip()
+USE_CLOUDINARY = bool(CLOUDINARY_URL)
+
+CLOUDINARY_STORAGE = None
+if USE_CLOUDINARY:
+    # cloudinary://<api_key>:<api_secret>@<cloud_name>
+    u = urlparse(CLOUDINARY_URL)
+    CLOUDINARY_STORAGE = {
+        "CLOUD_NAME": u.hostname,
+        "API_KEY": u.username,
+        "API_SECRET": u.password,
+    }
+
+
+# =====================
 # APPS
+# =====================
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -46,10 +72,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "portfolio",
 ]
 
+if USE_CLOUDINARY:
+    INSTALLED_APPS += ["cloudinary", "cloudinary_storage"]
+
+INSTALLED_APPS += ["portfolio"]
+
+
+# =====================
 # MIDDLEWARE
+# =====================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -61,6 +94,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+# =====================
+# CORE
+# =====================
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
@@ -82,17 +119,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-import dj_database_url
-
+# =====================
+# DATABASE (Postgres auf Render via DATABASE_URL)
+# =====================
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",  # local fallback
         conn_max_age=600,
-        ssl_require=not DEBUG,
+        ssl_require=not DEBUG,  # auf Render True
     )
 }
 
 
+# =====================
+# AUTH / I18N
+# =====================
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -100,50 +141,50 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
 LANGUAGE_CODE = "de"
 TIME_ZONE = "Europe/Zurich"
 USE_I18N = True
 USE_TZ = True
 
 
+# =====================
 # STATIC
+# =====================
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 
-# MEDIA (lokal ok; auf Render ohne Cloudinary wird /media nicht funktionieren)
+# =====================
+# MEDIA
+# =====================
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
+# =====================
 # STORAGES (Django 5+)
+# =====================
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
     },
-    # "default" setzen wir unten abhängig von CLOUDINARY_URL
+    "default": {
+        "BACKEND": (
+            "cloudinary_storage.storage.MediaCloudinaryStorage"
+            if USE_CLOUDINARY
+            else "django.core.files.storage.FileSystemStorage"
+        )
+    },
 }
-
-
-# Cloudinary (wenn CLOUDINARY_URL gesetzt ist -> Media laufen über Cloudinary)
-CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL", "").strip()
-if CLOUDINARY_URL:
-    INSTALLED_APPS += ["cloudinary", "cloudinary_storage"]
-    STORAGES["default"] = {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
-    }
-else:
-    STORAGES["default"] = {
-        "BACKEND": "django.core.files.storage.FileSystemStorage"
-    }
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+# =====================
 # Render / HTTPS
+# =====================
 CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com"]
 if render_host:
     CSRF_TRUSTED_ORIGINS.append(f"https://{render_host}")
